@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinCare Builder - Personalized Skincare Routines</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8faf8;
+        }
+
+        /* CSS Variables for Theme */
+        :root {
+            --primary-color: #5a8f5a;
+            --primary-dark: #4a7a4a;
+            --accent-color: #d87b7b;
+            --accent-light: #e8b5b5;
+            --background: #ffffff;
+            --surface: #f1f5f1;
+            --border: #e2e8e2;
+            --text-primary: #2d3748;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        /* Header */
+        .header {
+            background: var(--background);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-accent {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Home Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--background) 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Assessment Section */
+        .assessment-container {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .option-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background: #e8f5e8;
+        }
+
+        .option-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-item.selected {
+            border-color: var(--primary-color);
+            background: #e8f5e8;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .select-group {
+            margin-bottom: 2rem;
+        }
+
+        .select-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .select-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Results Section */
+        .results-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .preference-toggle {
+            display: flex;
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 4px;
+            margin: 2rem auto;
+            width: fit-content;
+        }
+
+        .toggle-option {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-option.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .seasonal-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .seasonal-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .seasonal-card:hover {
+            transform: scale(1.05);
+        }
+
+        .seasonal-card.active {
+            border-color: var(--primary-color);
+            background: #e8f5e8;
+        }
+
+        .routine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .routine-column {
+            background: var(--background);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .routine-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .routine-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .routine-step {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .routine-step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .product-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .product-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .product-tag.home-remedy {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .product-tag.commercial {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .ingredient-analysis {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .ingredient-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .ingredient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .safety-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .safety-badge.safe {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .safety-badge.caution {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .safety-badge.warning {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        /* Navigation buttons */
+        .nav-buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .routine-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo" onclick="showSection('home')">
+                <i class="fas fa-spa"></i> SkinCare Builder
+            </a>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-outline" onclick="showSection('home')">Home</a>
+                <a href="#" class="btn btn-primary" onclick="showSection('assessment')">Start Assessment</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="hero">
+            <div class="container">
+                <h1>Your Perfect Skincare Routine Awaits</h1>
+                <p>Discover personalized skincare solutions tailored to your unique skin type, concerns, and lifestyle. Get recommendations for both natural home remedies and premium products.</p>
+                <a href="#" class="btn btn-primary" onclick="showSection('assessment')">
+                    <i class="fas fa-magic"></i> Start Your Skin Assessment
+                </a>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Expert Analysis</h3>
+                    <p>AI-powered skin assessment based on dermatological research and expert recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Natural & Commercial</h3>
+                    <p>Choose between effective home remedies and professional skincare products, or combine both</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Seasonal Adaptation</h3>
+                    <p>Routines automatically adjust for seasonal changes and environmental factors</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Allergy Safe</h3>
+                    <p>Comprehensive ingredient analysis with personalized allergy warnings and alternatives</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Section -->
+    <section id="assessment" class="section">
+        <div class="container">
+            <div class="assessment-container">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h1 style="color: var(--primary-color);">Skin Assessment</h1>
+                    <p style="color: var(--text-secondary);">Help us understand your skin to create the perfect routine</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+                </div>
+                
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+                    Step <span id="currentStep">1</span> of 3
+                </p>
+
+                <!-- Step 1: Skin Type -->
+                <div id="step1" class="question-card">
+                    <h2 class="question-title">What's your primary skin type?</h2>
+                    <div class="options-grid">
+                        <div class="option-card" onclick="selectSkinType('oily')" data-value="oily">
+                            <i class="fas fa-tint"></i>
+                            <h4>Oily</h4>
+                            <p>Shiny T-zone, enlarged pores, prone to breakouts</p>
+                        </div>
+                        <div class="option-card" onclick="selectSkinType('dry')" data-value="dry">
+                            <i class="fas fa-sun"></i>
+                            <h4>Dry</h4>
+                            <p>Tight feeling, flaky patches, minimal oil production</p>
+                        </div>
+                        <div class="option-card" onclick="selectSkinType('combination')" data-value="combination">
+                            <i class="fas fa-balance-scale"></i>
+                            <h4>Combination</h4>
+                            <p>Oily T-zone with dry cheeks and temples</p>
+                        </div>
+                        <div class="option-card" onclick="selectSkinType('sensitive')" data-value="sensitive">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Sensitive</h4>
+                            <p>Reactive to products, redness, irritation-prone</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Skin Concerns -->
+                <div id="step2" class="question-card" style="display: none;">
+                    <h2 class="question-title">What are your main skin concerns? (Select all that apply)</h2>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item" onclick="toggleConcern('acne')" data-value="acne">
+                            <input type="checkbox" id="concern-acne">
+                            <label for="concern-acne">Acne & Breakouts</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('aging')" data-value="aging">
+                            <input type="checkbox" id="concern-aging">
+                            <label for="concern-aging">Fine Lines & Aging</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('dark-spots')" data-value="dark-spots">
+                            <input type="checkbox" id="concern-dark-spots">
+                            <label for="concern-dark-spots">Dark Spots & Pigmentation</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('pores')" data-value="pores">
+                            <input type="checkbox" id="concern-pores">
+                            <label for="concern-pores">Large Pores</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('dullness')" data-value="dullness">
+                            <input type="checkbox" id="concern-dullness">
+                            <label for="concern-dullness">Dull Complexion</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('redness')" data-value="redness">
+                            <input type="checkbox" id="concern-redness">
+                            <label for="concern-redness">Redness & Irritation</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('dryness')" data-value="dryness">
+                            <input type="checkbox" id="concern-dryness">
+                            <label for="concern-dryness">Dryness & Dehydration</label>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleConcern('oiliness')" data-value="oiliness">
+                            <input type="checkbox" id="concern-oiliness">
+                            <label for="concern-oiliness">Excess Oil Production</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Lifestyle & Preferences -->
+                <div id="step3" class="question-card" style="display: none;">
+                    <h2 class="question-title">Lifestyle & Preferences</h2>
+                    
+                    <div class="select-group">
+                        <label for="ageRange">Age Range</label>
+                        <select id="ageRange" onchange="updateAssessment('ageRange', this.value)">
+                            <option value="">Select your age range</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46-55">46-55</option>
+                            <option value="55+">55+</option>
+                        </select>
+                    </div>
+
+                    <div class="select-group">
+                        <label for="budget">Budget Preference</label>
+                        <select id="budget" onchange="updateAssessment('budget', this.value)">
+                            <option value="">Select your budget preference</option>
+                            <option value="budget">Budget-Friendly ($0-50/month)</option>
+                            <option value="mid-range">Mid-Range ($50-150/month)</option>
+                            <option value="premium">Premium ($150+/month)</option>
+                            <option value="home-remedies">I prefer home remedies</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <label style="display: block; margin-bottom: 1rem; font-weight: bold;">Time Available for Routine</label>
+                        <div class="options-grid">
+                            <div class="option-card" onclick="selectTimePreference('quick')" data-value="quick">
+                                <i class="fas fa-clock"></i>
+                                <h4>Quick (5-10 min)</h4>
+                                <p>Minimal steps for busy lifestyles</p>
+                            </div>
+                            <div class="option-card" onclick="selectTimePreference('moderate')" data-value="moderate">
+                                <i class="fas fa-hourglass-half"></i>
+                                <h4>Moderate (10-20 min)</h4>
+                                <p>Balanced routine with key steps</p>
+                            </div>
+                            <div class="option-card" onclick="selectTimePreference('extensive')" data-value="extensive">
+                                <i class="fas fa-spa"></i>
+                                <h4>Extensive (20+ min)</h4>
+                                <p>Complete routine with all steps</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons-container">
+                    <button class="btn btn-outline" id="backBtn" onclick="previousStep()" style="display: none;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" disabled>
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="section">
+        <div class="container">
+            <div class="results-header">
+                <h1 style="color: var(--primary-color);">Your Personalized Skincare Routine</h1>
+                <p id="assessmentSummary" style="color: var(--text-secondary); margin: 1rem 0;"></p>
+                
+                <div class="preference-toggle">
+                    <button class="toggle-option active" onclick="setPreference('home-remedies')" id="homeToggle">
+                        <i class="fas fa-leaf"></i> Home Remedies
+                    </button>
+                    <button class="toggle-option" onclick="setPreference('products')" id="productToggle">
+                        <i class="fas fa-shopping-bag"></i> Products
+                    </button>
+                </div>
+            </div>
+
+            <!-- Seasonal Adjustment -->
+            <div style="background: var(--background); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 1rem;">Seasonal Adjustments</h3>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Your routine adapts to seasonal changes for optimal results</p>
+                
+                <div class="seasonal-cards">
+                    <div class="seasonal-card" onclick="selectSeason('spring')" data-season="spring">
+                        <i class="fas fa-seedling" style="font-size: 2rem; color: #90EE90; margin-bottom: 1rem;"></i>
+                        <h4>Spring</h4>
+                        <p>Light cleansing, gentle exfoliation</p>
+                    </div>
+                    <div class="seasonal-card" onclick="selectSeason('summer')" data-season="summer">
+                        <i class="fas fa-sun" style="font-size: 2rem; color: #FFD700; margin-bottom: 1rem;"></i>
+                        <h4>Summer</h4>
+                        <p>Extra SPF, oil control, hydration</p>
+                    </div>
+                    <div class="seasonal-card active" onclick="selectSeason('fall')" data-season="fall">
+                        <i class="fas fa-leaf" style="font-size: 2rem; color: #DAA520; margin-bottom: 1rem;"></i>
+                        <h4>Fall</h4>
+                        <p>Repair damage, prepare for dryness</p>
+                    </div>
+                    <div class="seasonal-card" onclick="selectSeason('winter')" data-season="winter">
+                        <i class="fas fa-snowflake" style="font-size: 2rem; color: #87CEEB; margin-bottom: 1rem;"></i>
+                        <h4>Winter</h4>
+                        <p>Deep hydration, barrier repair</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Routine Display -->
+            <div id="routineDisplay" class="routine-grid">
+                <!-- Morning Routine -->
+                <div class="routine-column">
+                    <div class="routine-header">
+                        <h3><i class="fas fa-sun"></i> Morning Routine</h3>
+                        <p>Start your day with glowing skin</p>
+                    </div>
+                    <div id="morningSteps">
+                        <!-- Steps will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Evening Routine -->
+                <div class="routine-column">
+                    <div class="routine-header">
+                        <h3><i class="fas fa-moon"></i> Evening Routine</h3>
+                        <p>Repair and rejuvenate overnight</p>
+                    </div>
+                    <div id="eveningSteps">
+                        <!-- Steps will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ingredient Analysis -->
+            <div class="ingredient-analysis">
+                <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">
+                    <i class="fas fa-microscope"></i> Ingredient Safety Analysis
+                </h3>
+                <div class="ingredient-list" id="ingredientList">
+                    <!-- Ingredients will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="saveRoutine()">
+                    <i class="fas fa-save"></i> Save This Routine
+                </button>
+                <button class="btn btn-outline" onclick="printRoutine()">
+                    <i class="fas fa-print"></i> Print Routine
+                </button>
+                <button class="btn btn-outline" onclick="showSection('assessment')">
+                    <i class="fas fa-redo"></i> Take New Assessment
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Application State
+        let currentStep = 1;
+        let assessment = {
+            skinType: '',
+            concerns: [],
+            ageRange: '',
+            budget: '',
+            timeAvailable: ''
+        };
+        let currentPreference = 'home-remedies';
+        let currentSeason = 'fall';
+
+        // Skincare Data
+        const skincareData = {
+            ingredients: [
+                { name: "Salicylic Acid", description: "Beta-hydroxy acid for exfoliation", benefits: ["Unclogs pores", "Reduces acne"], warnings: [], safetyLevel: "safe", commonAllergens: [] },
+                { name: "Niacinamide", description: "Vitamin B3 derivative", benefits: ["Reduces pore appearance", "Controls oil"], warnings: [], safetyLevel: "safe", commonAllergens: [] },
+                { name: "Retinol", description: "Vitamin A derivative for anti-aging", benefits: ["Reduces fine lines", "Improves texture"], warnings: ["Sun sensitivity", "Not for pregnant women"], safetyLevel: "caution", commonAllergens: [] },
+                { name: "Fragrance", description: "Synthetic or natural scent", benefits: [], warnings: ["May cause irritation"], safetyLevel: "warning", commonAllergens: ["sensitive skin"] },
+                { name: "Hyaluronic Acid", description: "Humectant for hydration", benefits: ["Retains moisture", "Plumps skin"], warnings: [], safetyLevel: "safe", commonAllergens: [] },
+                { name: "Raw Honey", description: "Natural humectant and antibacterial", benefits: ["Moisturizes", "Fights bacteria"], warnings: [], safetyLevel: "safe", commonAllergens: ["honey allergy"] },
+                { name: "Oatmeal", description: "Gentle exfoliant and anti-inflammatory", benefits: ["Soothes skin", "Gentle exfoliation"], warnings: [], safetyLevel: "safe", commonAllergens: [] },
+                { name: "Green Tea", description: "Antioxidant and anti-inflammatory", benefits: ["Reduces inflammation", "Antioxidant protection"], warnings: [], safetyLevel: "safe", commonAllergens: [] }
+            ],
+            
+            homeRemedies: {
+                oily: {
+                    morning: [
+                        { title: "Clay Mask Cleanser", description: "Mix bentonite clay with water", ingredients: ["Bentonite Clay", "Water"], instructions: "Mix 1 tbsp clay with water to form paste, apply for 2 minutes, rinse" },
+                        { title: "Green Tea Toner", description: "Brewed green tea as toner", ingredients: ["Green Tea"], instructions: "Brew strong green tea, cool, apply with cotton pad" },
+                        { title: "Aloe Vera Moisturizer", description: "Pure aloe vera gel", ingredients: ["Aloe Vera"], instructions: "Apply thin layer of pure aloe vera gel" }
+                    ],
+                    evening: [
+                        { title: "Honey Cleanser", description: "Raw honey for cleansing", ingredients: ["Raw Honey"], instructions: "Massage 1 tsp raw honey on face, rinse with warm water" },
+                        { title: "Tea Tree Oil Treatment", description: "Diluted tea tree oil for spots", ingredients: ["Tea Tree Oil", "Carrier Oil"], instructions: "Mix 1 drop tea tree oil with 10 drops carrier oil, apply to blemishes" },
+                        { title: "Oatmeal Night Mask", description: "Soothing oatmeal treatment", ingredients: ["Oatmeal", "Water"], instructions: "Grind oatmeal, mix with water, apply as mask for 15 minutes" }
+                    ]
+                },
+                dry: {
+                    morning: [
+                        { title: "Honey Oat Cleanser", description: "Gentle cleansing with natural ingredients", ingredients: ["Raw Honey", "Ground Oats"], instructions: "Mix 2 tbsp honey with 1 tbsp ground oats, massage gently, rinse" },
+                        { title: "Rose Water Toner", description: "Hydrating rose water", ingredients: ["Rose Water"], instructions: "Apply rose water with cotton pad or spray bottle" },
+                        { title: "Avocado Moisturizer", description: "Rich natural moisturizer", ingredients: ["Avocado", "Honey"], instructions: "Mash 1/4 avocado with 1 tsp honey, apply for 15 minutes" }
+                    ],
+                    evening: [
+                        { title: "Oil Cleansing", description: "Coconut oil for gentle cleansing", ingredients: ["Coconut Oil"], instructions: "Massage coconut oil on face, remove with warm cloth" },
+                        { title: "Cucumber Serum", description: "Hydrating cucumber juice", ingredients: ["Cucumber"], instructions: "Blend cucumber, strain juice, apply to face" },
+                        { title: "Overnight Honey Mask", description: "Deep moisturizing treatment", ingredients: ["Raw Honey", "Milk"], instructions: "Mix honey with few drops of milk, leave on overnight" }
+                    ]
+                },
+                combination: {
+                    morning: [
+                        { title: "Yogurt Cleanser", description: "Balancing cleanser for combination skin", ingredients: ["Plain Yogurt", "Honey"], instructions: "Mix 2 tbsp yogurt with 1 tsp honey, massage on face" },
+                        { title: "Apple Cider Vinegar Toner", description: "Balancing toner", ingredients: ["Apple Cider Vinegar", "Water"], instructions: "Mix 1 part ACV with 3 parts water, apply to T-zone" },
+                        { title: "Light Moisturizer", description: "Aloe and jojoba blend", ingredients: ["Aloe Vera", "Jojoba Oil"], instructions: "Mix aloe vera gel with 2-3 drops jojoba oil" }
+                    ],
+                    evening: [
+                        { title: "Double Cleanse", description: "Oil then water-based cleansing", ingredients: ["Jojoba Oil", "Honey"], instructions: "First cleanse with jojoba oil, then with honey" },
+                        { title: "Spot Treatment", description: "Targeted treatment for different areas", ingredients: ["Tea Tree Oil", "Rosehip Oil"], instructions: "Tea tree oil on oily areas, rosehip oil on dry areas" },
+                        { title: "Night Moisturizer", description: "Zone-specific moisturizing", ingredients: ["Shea Butter", "Aloe Vera"], instructions: "Shea butter on dry areas, aloe vera on oily zones" }
+                    ]
+                },
+                sensitive: {
+                    morning: [
+                        { title: "Gentle Milk Cleanser", description: "Soothing milk cleansing", ingredients: ["Whole Milk", "Rose Water"], instructions: "Mix milk with rose water, apply gently, rinse with cool water" },
+                        { title: "Chamomile Toner", description: "Calming chamomile tea", ingredients: ["Chamomile Tea"], instructions: "Brew chamomile tea, cool completely, apply with soft cotton" },
+                        { title: "Simple Moisturizer", description: "Pure aloe vera", ingredients: ["Aloe Vera"], instructions: "Apply pure aloe vera gel, avoid fragrant products" }
+                    ],
+                    evening: [
+                        { title: "Gentle Oil Cleanse", description: "Mild cleansing oil", ingredients: ["Sweet Almond Oil"], instructions: "Massage sweet almond oil gently, remove with soft cloth" },
+                        { title: "Oatmeal Soothe", description: "Anti-inflammatory oatmeal", ingredients: ["Colloidal Oatmeal", "Water"], instructions: "Mix colloidal oatmeal with water, apply as soothing mask" },
+                        { title: "Night Recovery", description: "Gentle overnight treatment", ingredients: ["Coconut Oil", "Lavender"], instructions: "Mix tiny amount coconut oil with 1 drop lavender oil" }
+                    ]
+                }
+            },
+
+            products: {
+                oily: {
+                    morning: [
+                        { title: "Salicylic Acid Cleanser", description: "BHA cleanser for oil control", products: ["CeraVe Foaming Facial Cleanser", "Neutrogena Oil-Free Acne Wash"] },
+                        { title: "Niacinamide Serum", description: "Pore-minimizing treatment", products: ["The Ordinary Niacinamide 10% + Zinc 1%", "Paula's Choice CLEAR Pore Normalizing Cleanser"] },
+                        { title: "Oil-Free Moisturizer", description: "Lightweight hydration", products: ["Clinique Dramatically Different Moisturizing Gel", "Neutrogena Hydra Boost Water Gel"] }
+                    ],
+                    evening: [
+                        { title: "Double Cleanse", description: "Thorough evening cleansing", products: ["Banila Co Clean It Zero", "CeraVe Foaming Facial Cleanser"] },
+                        { title: "Retinol Treatment", description: "Anti-aging and pore treatment", products: ["Differin Adapalene Gel 0.1%", "The Ordinary Retinol 0.5% in Squalane"] },
+                        { title: "Night Moisturizer", description: "Repair and hydration", products: ["Olay Regenerist Night Recovery Cream", "The Ordinary Natural Moisturizing Factors"] }
+                    ]
+                },
+                dry: {
+                    morning: [
+                        { title: "Hydrating Cleanser", description: "Gentle, non-stripping cleanser", products: ["CeraVe Hydrating Cleanser", "La Roche-Posay Toleriane Caring Wash"] },
+                        { title: "Hyaluronic Acid Serum", description: "Deep hydration boost", products: ["The Ordinary Hyaluronic Acid 2% + B5", "Neutrogena Hydra Boost Hydrating Serum"] },
+                        { title: "Rich Moisturizer", description: "Intensive hydration", products: ["CeraVe Daily Moisturizing Lotion", "Vanicream Moisturizing Cream"] }
+                    ],
+                    evening: [
+                        { title: "Cream Cleanser", description: "Nourishing evening cleanse", products: ["Cetaphil Gentle Skin Cleanser", "Aveeno Ultra-Calming Foaming Cleanser"] },
+                        { title: "Vitamin C Serum", description: "Antioxidant protection", products: ["Skinceuticals CE Ferulic", "Mad Hippie Vitamin C Serum"] },
+                        { title: "Night Cream", description: "Overnight repair and hydration", products: ["Olay Regenerist Night Recovery Cream", "No7 Protect & Perfect Night Cream"] }
+                    ]
+                },
+                combination: {
+                    morning: [
+                        { title: "Balancing Cleanser", description: "Gentle yet effective cleansing", products: ["Neutrogena Ultra Gentle Daily Cleanser", "Aveeno Clear Complexion Foaming Cleanser"] },
+                        { title: "Multi-Zone Treatment", description: "Targeted care for different areas", products: ["Paula's Choice SKIN PERFECTING 2% BHA", "The Ordinary Niacinamide 10% + Zinc 1%"] },
+                        { title: "Lightweight Moisturizer", description: "Balanced hydration", products: ["Clinique Dramatically Different Moisturizing Gel", "Aveeno Daily Moisturizing Lotion"] }
+                    ],
+                    evening: [
+                        { title: "Thorough Cleanse", description: "Complete makeup and impurity removal", products: ["Garnier SkinActive Micellar Cleansing Water", "CeraVe Foaming Facial Cleanser"] },
+                        { title: "Targeted Treatment", description: "Address specific concerns", products: ["Differin Adapalene Gel 0.1%", "The Ordinary Granactive Retinoid 2%"] },
+                        { title: "Zone Moisturizing", description: "Customized hydration", products: ["The Ordinary Natural Moisturizing Factors", "CeraVe PM Facial Moisturizing Lotion"] }
+                    ]
+                },
+                sensitive: {
+                    morning: [
+                        { title: "Gentle Cleanser", description: "Fragrance-free, mild cleansing", products: ["Vanicream Gentle Facial Cleanser", "La Roche-Posay Toleriane Purifying Foaming Cleanser"] },
+                        { title: "Soothing Serum", description: "Calming and hydrating", products: ["The Ordinary Marine Hyaluronics", "Paula's Choice CALM Restoring Serum"] },
+                        { title: "Sensitive Moisturizer", description: "Hypoallergenic hydration", products: ["Vanicream Moisturizing Lotion", "Aveeno Ultra-Calming Daily Moisturizer"] }
+                    ],
+                    evening: [
+                        { title: "Mild Evening Cleanser", description: "Gentle removal of daily buildup", products: ["Cetaphil Gentle Skin Cleanser", "Aveeno Ultra-Calming Foaming Cleanser"] },
+                        { title: "Repair Serum", description: "Overnight skin barrier repair", products: ["The Ordinary B Oil", "Paula's Choice CALM Restoring Serum"] },
+                        { title: "Night Recovery", description: "Gentle overnight treatment", products: ["CeraVe PM Facial Moisturizing Lotion", "Vanicream Moisturizing Cream"] }
+                    ]
+                }
+            }
+        };
+
+        // Navigation Functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // If showing results, generate routine
+            if (sectionId === 'results') {
+                generateRoutine();
+            }
+        }
+
+        // Assessment Functions
+        function selectSkinType(type) {
+            assessment.skinType = type;
+            
+            // Update UI
+            document.querySelectorAll('#step1 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`#step1 .option-card[data-value="${type}"]`).classList.add('selected');
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function toggleConcern(concern) {
+            const checkbox = document.getElementById(`concern-${concern}`);
+            const item = document.querySelector(`#step2 .checkbox-item[data-value="${concern}"]`);
+            
+            if (assessment.concerns.includes(concern)) {
+                assessment.concerns = assessment.concerns.filter(c => c !== concern);
+                checkbox.checked = false;
+                item.classList.remove('selected');
+            } else {
+                assessment.concerns.push(concern);
+                checkbox.checked = true;
+                item.classList.add('selected');
+            }
+            
+            // Enable next button if at least one concern is selected
+            document.getElementById('nextBtn').disabled = assessment.concerns.length === 0;
+        }
+
+        function updateAssessment(field, value) {
+            assessment[field] = value;
+            checkStep3Completion();
+        }
+
+        function selectTimePreference(time) {
+            assessment.timeAvailable = time;
+            
+            // Update UI
+            document.querySelectorAll('#step3 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`#step3 .option-card[data-value="${time}"]`).classList.add('selected');
+            
+            checkStep3Completion();
+        }
+
+        function checkStep3Completion() {
+            const isComplete = assessment.ageRange && assessment.budget && assessment.timeAvailable;
+            document.getElementById('nextBtn').disabled = !isComplete;
+            
+            if (isComplete) {
+                document.getElementById('nextBtn').innerHTML = '<i class="fas fa-magic"></i> Generate My Routine';
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 3) {
+                // Hide current step
+                document.getElementById(`step${currentStep}`).style.display = 'none';
+                
+                // Show next step
+                currentStep++;
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+                
+                // Update progress
+                updateProgress();
+                
+                // Update buttons
+                updateButtons();
+            } else {
+                // Generate routine and show results
+                showSection('results');
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                // Hide current step
+                document.getElementById(`step${currentStep}`).style.display = 'none';
+                
+                // Show previous step
+                currentStep--;
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+                
+                // Update progress
+                updateProgress();
+                
+                // Update buttons
+                updateButtons();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 3) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentStep').textContent = currentStep;
+        }
+
+        function updateButtons() {
+            const backBtn = document.getElementById('backBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            // Show/hide back button
+            backBtn.style.display = currentStep > 1 ? 'block' : 'none';
+            
+            // Update next button
+            if (currentStep === 1) {
+                nextBtn.disabled = !assessment.skinType;
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+            } else if (currentStep === 2) {
+                nextBtn.disabled = assessment.concerns.length === 0;
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+            } else if (currentStep === 3) {
+                checkStep3Completion();
+            }
+        }
+
+        // Results Functions
+        function setPreference(preference) {
+            currentPreference = preference;
+            
+            // Update toggle buttons
+            document.getElementById('homeToggle').classList.toggle('active', preference === 'home-remedies');
+            document.getElementById('productToggle').classList.toggle('active', preference === 'products');
+            
+            // Regenerate routine
+            generateRoutine();
+        }
+
+        function selectSeason(season) {
+            currentSeason = season;
+            
+            // Update seasonal cards
+            document.querySelectorAll('.seasonal-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector(`.seasonal-card[data-season="${season}"]`).classList.add('active');
+            
+            // Regenerate routine with seasonal adjustments
+            generateRoutine();
+        }
+
+        function generateRoutine() {
+            // Update assessment summary
+            const summaryElement = document.getElementById('assessmentSummary');
+            summaryElement.textContent = `Based on your ${assessment.skinType} skin type and concerns about ${assessment.concerns.slice(0, 2).join(' and ')}${assessment.concerns.length > 2 ? ` and ${assessment.concerns.length - 2} more` : ''}`;
+            
+            // Generate routine steps based on preferences
+            const routineData = currentPreference === 'home-remedies' ? 
+                skincareData.homeRemedies[assessment.skinType] : 
+                skincareData.products[assessment.skinType];
+            
+            // Populate morning routine
+            populateRoutineSteps('morningSteps', routineData.morning, 'morning');
+            
+            // Populate evening routine
+            populateRoutineSteps('eveningSteps', routineData.evening, 'evening');
+            
+            // Generate ingredient analysis
+            generateIngredientAnalysis();
+        }
+
+        function populateRoutineSteps(containerId, steps, timeOfDay) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            steps.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = 'routine-step fade-in';
+                
+                const products = currentPreference === 'home-remedies' ? 
+                    (step.ingredients || []).map(ing => ({ name: ing, type: 'home-remedy' })) :
+                    (step.products || []).map(prod => ({ name: prod, type: 'commercial' }));
+                
+                stepElement.innerHTML = `
+                    <div class="step-number">${index + 1}</div>
+                    <div class="step-title">${step.title}</div>
+                    <div class="step-description">${step.description}</div>
+                    ${step.instructions ? `<p style="font-style: italic; color: var(--text-secondary); margin: 0.5rem 0;"><i class="fas fa-info-circle"></i> ${step.instructions}</p>` : ''}
+                    ${products.length > 0 ? `
+                        <div class="product-tags">
+                            ${products.map(product => `
+                                <span class="product-tag ${product.type}">${product.name}</span>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                `;
+                
+                container.appendChild(stepElement);
+            });
+        }
+
+        function generateIngredientAnalysis() {
+            const container = document.getElementById('ingredientList');
+            container.innerHTML = '';
+            
+            // Get relevant ingredients based on skin type and concerns
+            const relevantIngredients = skincareData.ingredients.slice(0, 6);
+            
+            relevantIngredients.forEach(ingredient => {
+                const ingredientElement = document.createElement('div');
+                ingredientElement.className = 'ingredient-item';
+                
+                ingredientElement.innerHTML = `
+                    <div>
+                        <strong>${ingredient.name}</strong>
+                        ${ingredient.description ? `<p style="color: var(--text-secondary); margin: 0.25rem 0;">${ingredient.description}</p>` : ''}
+                        ${ingredient.benefits.length > 0 ? `<p style="color: var(--success); font-size: 0.875rem;">Benefits: ${ingredient.benefits.join(', ')}</p>` : ''}
+                    </div>
+                    <span class="safety-badge ${ingredient.safetyLevel}">
+                        ${ingredient.safetyLevel === 'safe' ? 'Safe' : ingredient.safetyLevel === 'caution' ? 'Caution' : 'Warning'}
+                    </span>
+                `;
+                
+                container.appendChild(ingredientElement);
+            });
+        }
+
+        // Action Functions
+        function saveRoutine() {
+            // Simulate saving routine
+            const routineName = `${assessment.skinType} routine - ${new Date().toLocaleDateString()}`;
+            
+            // Create routine data
+            const routineData = {
+                name: routineName,
+                skinType: assessment.skinType,
+                concerns: assessment.concerns,
+                preference: currentPreference,
+                season: currentSeason,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            const savedRoutines = JSON.parse(localStorage.getItem('savedRoutines') || '[]');
+            savedRoutines.push(routineData);
+            localStorage.setItem('savedRoutines', JSON.stringify(savedRoutines));
+            
+            alert('Routine saved successfully! You can access it anytime from your saved routines.');
+        }
+
+        function printRoutine() {
+            window.print();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current season based on date
+            const month = new Date().getMonth();
+            if (month >= 2 && month <= 4) currentSeason = 'spring';
+            else if (month >= 5 && month <= 7) currentSeason = 'summer';
+            else if (month >= 8 && month <= 10) currentSeason = 'fall';
+            else currentSeason = 'winter';
+            
+            // Update seasonal selection
+            document.querySelector(`.seasonal-card[data-season="${currentSeason}"]`).classList.add('active');
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            console.log('SkinCare Builder initialized successfully!');
+        });
+    </script>
+</body>
+</html>

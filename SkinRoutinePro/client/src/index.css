@@ -1,0 +1,268 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: hsl(120, 23.8%, 60.2%);
+  --primary-dark: hsl(120, 23.8%, 50.2%);
+  --accent-color: hsl(0, 50%, 74.5%);
+  --accent-light: hsl(0, 50%, 84.5%);
+  --background: hsl(0, 0%, 100%);
+  --surface: hsl(210, 17%, 97.6%);
+  --border: hsl(210, 16%, 91.8%);
+  --text-primary: hsl(210, 18%, 18%);
+  --text-secondary: hsl(210, 7%, 42.4%);
+  --text-muted: hsl(210, 7%, 67.8%);
+  --success: hsl(142, 69%, 41%);
+  --warning: hsl(45, 100%, 51%);
+  --error: hsl(356, 87%, 54%);
+  --radius: 0.5rem;
+  
+  /* Existing shadcn variables */
+  --foreground: hsl(210, 18%, 18%);
+  --card: hsl(210, 17%, 97.6%);
+  --card-foreground: hsl(210, 18%, 18%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(210, 18%, 18%);
+  --primary: hsl(120, 23.8%, 60.2%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 7%, 42.4%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(210, 7%, 90%);
+  --muted-foreground: hsl(210, 7%, 42.4%);
+  --accent: hsl(213, 50%, 92.5%);
+  --accent-foreground: hsl(120, 23.8%, 60.2%);
+  --destructive: hsl(356, 87%, 54%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --input: hsl(200, 23%, 97.5%);
+  --ring: hsl(120, 23.8%, 60.2%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(200, 7%, 91%);
+  --card: hsl(228, 10%, 10%);
+  --card-foreground: hsl(0, 0%, 85%);
+  --popover: hsl(0, 0%, 0%);
+  --popover-foreground: hsl(200, 7%, 91%);
+  --primary: hsl(120, 23%, 52%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(195, 15%, 95%);
+  --secondary-foreground: hsl(210, 18%, 18%);
+  --muted: hsl(0, 0%, 9%);
+  --muted-foreground: hsl(210, 3%, 46%);
+  --accent: hsl(206, 70%, 8%);
+  --accent-foreground: hsl(120, 23%, 52%);
+  --destructive: hsl(356, 87%, 54%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(210, 5%, 15%);
+  --input: hsl(208, 28%, 18%);
+  --ring: hsl(120, 23.8%, 60.2%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Custom skincare theme classes */
+.skincare-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.skincare-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.skincare-accent {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.skincare-surface {
+  background-color: var(--surface);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+/* Option card styling */
+.option-card {
+  @apply border-2 border-border rounded-lg p-6 text-center cursor-pointer transition-all duration-300 bg-background hover:border-primary hover:shadow-md;
+}
+
+.option-card.selected {
+  @apply border-primary bg-green-50 dark:bg-green-950;
+}
+
+.option-card .option-icon {
+  @apply text-3xl mb-2;
+  color: var(--primary-color);
+}
+
+/* Feature card styling */
+.feature-card {
+  @apply bg-background p-6 rounded-lg shadow-sm text-center;
+}
+
+.feature-icon {
+  @apply text-4xl mb-4;
+  color: var(--primary-color);
+}
+
+/* Seasonal card styling */
+.seasonal-card {
+  @apply bg-background rounded-lg p-6 text-center shadow-sm cursor-pointer transition-all duration-300 hover:scale-105;
+}
+
+.seasonal-card.active {
+  @apply border-2 border-primary bg-green-50 dark:bg-green-950;
+}
+
+/* Product tag styling */
+.product-tag {
+  @apply px-3 py-1 rounded-full text-sm border;
+}
+
+.product-tag.home-remedy {
+  @apply bg-green-100 text-green-700 border-green-300 dark:bg-green-950 dark:text-green-300 dark:border-green-700;
+}
+
+.product-tag.commercial {
+  @apply bg-red-100 text-red-700 border-red-300 dark:bg-red-950 dark:text-red-300 dark:border-red-700;
+}
+
+/* Ingredient safety styling */
+.ingredient-safety {
+  @apply px-3 py-1 rounded-full text-xs font-medium;
+}
+
+.ingredient-safety.safe {
+  @apply bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300;
+}
+
+.ingredient-safety.caution {
+  @apply bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300;
+}
+
+.ingredient-safety.warning {
+  @apply bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300;
+}
+
+/* Progress bar styling */
+.progress-bar {
+  @apply w-full h-2 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700;
+}
+
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-500;
+}
+
+/* Routine step styling */
+.routine-step {
+  @apply border-b border-border p-6 last:border-b-0;
+}
+
+.step-number {
+  @apply w-8 h-8 rounded-full flex items-center justify-center font-semibold text-white text-sm mb-4;
+  background-color: var(--accent-color);
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(30px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* Responsive grid utilities */
+.hero-features {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12;
+}
+
+.seasonal-cards {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8;
+}
+
+.routine-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12;
+}
+
+.dashboard-grid {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-8;
+}
+
+.product-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8;
+}
+
+/* Toggle switch styling */
+.toggle-switch {
+  @apply bg-gray-200 rounded-full p-1 flex relative dark:bg-gray-700;
+}
+
+.toggle-option {
+  @apply px-6 py-3 rounded-full bg-transparent border-none cursor-pointer transition-all duration-300 font-medium;
+}
+
+.toggle-option.active {
+  @apply text-white;
+  background-color: var(--primary-color);
+}
+
+/* Checkbox styling */
+.checkbox-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+}
+
+.checkbox-item {
+  @apply flex items-center gap-3 p-4 border border-border rounded-lg cursor-pointer transition-all duration-300 hover:bg-muted;
+}
+
+.checkbox-item input[type="checkbox"] {
+  @apply w-4 h-4;
+}
